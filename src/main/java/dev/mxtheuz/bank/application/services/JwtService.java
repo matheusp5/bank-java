@@ -23,7 +23,7 @@ public class JwtService implements IJwtService {
         return JWT.create()
                 .withIssuer("uuid")
                 .withSubject("uuid")
-                .withClaim("userUUID", uuid)
+                .withClaim("user", uuid)
                 .withIssuedAt(new Date())
                 .withJWTId(UUID.randomUUID()
                         .toString())
@@ -34,7 +34,7 @@ public class JwtService implements IJwtService {
     @Override
     public String decodeToken(String token) {
         DecodedJWT decodedJWT = verifier.verify(token);
-        Claim claim = decodedJWT.getClaim("userUUID");
+        Claim claim = decodedJWT.getClaim("user");
         return claim.asString();
     }
 }
