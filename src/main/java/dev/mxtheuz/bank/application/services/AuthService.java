@@ -1,5 +1,7 @@
 package dev.mxtheuz.bank.application.services;
 
+import dev.mxtheuz.bank.domain.dto.CreateUserDto;
+import dev.mxtheuz.bank.domain.dto.LoginUserDto;
 import dev.mxtheuz.bank.domain.entities.User;
 import dev.mxtheuz.bank.domain.repositories.IUserRepository;
 import dev.mxtheuz.bank.domain.services.IAuthService;
@@ -16,15 +18,21 @@ public class AuthService implements IAuthService {
     private HashService hashService;
 
     @Override
-    public boolean login(String email, String password) {
-        User user = userRepository.findByEmail(email);
+    public boolean login(LoginUserDto model) {
+        User user = userRepository.findByEmail(model.email());
         if(user == null) return false;
-        return hashService.verify(password, user.getPassword());
+        return hashService.verify(user.getPassword(), model.password());
     }
 
     @Override
-    public User register(User model) {
-        model.setPassword(hashService.hash(model.getPassword()));
-        return userRepository.save(model);
+    public User register(CreateUserDto model) {
+        User user = User.builder()
+                .email(model.email())
+                .name(model.name())
+                .password(hashService.hash(model.password()))
+                .build();
+
+
+        return userRepository.save(user);
     }
 }

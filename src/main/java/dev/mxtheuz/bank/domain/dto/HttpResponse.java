@@ -1,10 +1,12 @@
 package dev.mxtheuz.bank.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.*;
 
-@AllArgsConstructor
+@Setter
+@Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class HttpResponse {
     private int code;
     private String message;

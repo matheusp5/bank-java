@@ -2,7 +2,9 @@ package dev.mxtheuz.bank.controller;
 
 import dev.mxtheuz.bank.application.services.AuthService;
 import dev.mxtheuz.bank.application.services.JwtService;
+import dev.mxtheuz.bank.domain.dto.CreateUserDto;
 import dev.mxtheuz.bank.domain.dto.HttpResponse;
+import dev.mxtheuz.bank.domain.dto.LoginUserDto;
 import dev.mxtheuz.bank.domain.entities.User;
 import dev.mxtheuz.bank.domain.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +29,9 @@ public class AuthController {
     private IUserRepository userRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<HttpResponse> Login(@RequestBody User dto) {
-        if(authService.login(dto.getEmail(), dto.getPassword())) {
-            User user = userRepository.findByEmail(dto.getEmail());
+    public ResponseEntity<HttpResponse> Login(@RequestBody LoginUserDto dto) {
+        if(authService.login(dto)) {
+            User user = userRepository.findByEmail(dto.email());
             String token = jwtService.createToken(user.getId());
             return ResponseEntity.ok(new HttpResponse(200, "authorized", token));
         }
@@ -38,8 +40,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<HttpResponse> Register(@RequestBody User dto) {
-        if(userRepository.findByEmail(dto.getEmail()) == null) {
+    public ResponseEntity<HttpResponse> Register(@RequestBody CreateUserDto dto) {
+        if(userRepository.findByEmail(dto.email()) == null) {
             User user = authService.register(dto);
             return ResponseEntity.status(201).body(new HttpResponse(201, "created", user));
         }
