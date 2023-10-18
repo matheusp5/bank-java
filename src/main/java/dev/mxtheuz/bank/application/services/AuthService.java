@@ -12,13 +12,19 @@ public class AuthService implements IAuthService {
     @Autowired
     private IUserRepository userRepository;
 
+    @Autowired
+    private HashService hashService;
+
     @Override
     public boolean login(String email, String password) {
-        return false;
+        User user = userRepository.findByEmail(email);
+        if(user == null) return false;
+        return hashService.verify(password, user.getPassword());
     }
 
     @Override
     public User register(User model) {
-        return null;
+        model.setPassword(hashService.hash(model.getPassword()));
+        return userRepository.save(model);
     }
 }
