@@ -8,7 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tb_users")
+@Table(name = "tb_transactions")
 @Getter
 @Setter
 @Builder
@@ -16,15 +16,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class User {
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    private String name;
-    private String email;
-    private String password;
 
-    private double balance;
+
+    private double amount;
+
+    private String receiverId;
+    private String senderId;
 
     @CreatedDate
     @CreationTimestamp
