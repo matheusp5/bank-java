@@ -1,29 +1,29 @@
-package dev.mxtheuz.bank.domain.entities;
+package dev.mxtheuz.bank.domain.dto;
 
-import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "tb_transactions")
+
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 @ToString
-public class Transaction {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+public class UserTransactionDto {
     private String id;
     private double amount;
-    private String receiverId;
-    private String senderId;
+    private UserDto receiver;
     @CreatedDate
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    public UserTransactionDto(String id, double amount, UserDto receiver, LocalDateTime createdAt) {
+        this.id = id;
+        this.amount = amount;
+        this.receiver = receiver;
+        this.createdAt = createdAt;
+    }
 }

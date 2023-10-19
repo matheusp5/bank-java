@@ -22,7 +22,8 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        if(request.getRequestURI().contains("/api/transaction")) {
+        String uri = request.getRequestURI();
+        if(uri.contains("/api/transaction") || uri.contains("/api/user")) {
 
             var authorizationHeader = request.getHeader("Authorization");
             if (authorizationHeader == null) {

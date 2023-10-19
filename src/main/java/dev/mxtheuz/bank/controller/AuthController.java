@@ -5,8 +5,10 @@ import dev.mxtheuz.bank.application.services.JwtService;
 import dev.mxtheuz.bank.domain.dto.CreateUserDto;
 import dev.mxtheuz.bank.domain.dto.HttpResponse;
 import dev.mxtheuz.bank.domain.dto.LoginUserDto;
+import dev.mxtheuz.bank.domain.dto.UserDto;
 import dev.mxtheuz.bank.domain.entities.User;
 import dev.mxtheuz.bank.domain.repositories.IUserRepository;
+import dev.mxtheuz.bank.utils.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,9 +26,11 @@ public class AuthController {
     @Autowired
     private JwtService jwtService;
 
-
     @Autowired
     private IUserRepository userRepository;
+
+    @Autowired
+    private Converter converter;
 
     @PostMapping("/login")
     public ResponseEntity<HttpResponse> Login(@RequestBody LoginUserDto dto) {
@@ -45,7 +49,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<HttpResponse> Register(@RequestBody CreateUserDto dto) {
         if(userRepository.findByEmail(dto.email()) == null) {
-            User user = authService.register(dto);
+            UserDto user = converter.convertUserToUserDto(authService.register(dto));
             return ResponseEntity.status(201).body(new HttpResponse(201, "created", user));
         }
 
