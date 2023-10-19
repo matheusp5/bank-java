@@ -5,6 +5,7 @@ import dev.mxtheuz.bank.domain.dto.HttpResponse;
 import dev.mxtheuz.bank.domain.dto.UserDto;
 import dev.mxtheuz.bank.domain.dto.UserTransactionDto;
 import dev.mxtheuz.bank.domain.entities.Transaction;
+import dev.mxtheuz.bank.domain.entities.User;
 import dev.mxtheuz.bank.domain.repositories.ITransactionRepository;
 import dev.mxtheuz.bank.domain.repositories.IUserRepository;
 import dev.mxtheuz.bank.utils.Converter;
@@ -38,9 +39,10 @@ public class UserController {
     @GetMapping
     public ResponseEntity<HttpResponse> GetUser(HttpServletRequest request) {
         String userId = (String) request.getAttribute("userId");
-        UserDto user = this.converter.convertUserToUserDto(userRepository.findById(userId).get());
+        User user = userRepository.findById(userId).get();
+        UserDto userDto = this.converter.convertUserToUserDto(user);
         List<Transaction> transactions = transactionRepository.findBySenderId(userId);
         List<UserTransactionDto> transactionsDto = transactions.stream().map(converter::convertTransactionToUserTransactionResponseDto).toList();
-        return ResponseEntity.ok(new HttpResponse(200, "success", new GetUserResponse(user, transactionsDto)));
+        return ResponseEntity.ok(new HttpResponse(200, "success", new GetUserResponse(userDto, transactionsDto, user.getBalance())));
     }
 }
