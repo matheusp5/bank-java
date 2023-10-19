@@ -20,17 +20,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
+
+    private final JwtService jwtService;
+
+    private final IUserRepository userRepository;
+
+    private final Converter converter;
 
     @Autowired
-    private JwtService jwtService;
-
-    @Autowired
-    private IUserRepository userRepository;
-
-    @Autowired
-    private Converter converter;
+    public AuthController(AuthService authService, JwtService jwtService, IUserRepository userRepository, Converter converter) {
+        this.authService = authService;
+        this.jwtService = jwtService;
+        this.userRepository = userRepository;
+        this.converter = converter;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<HttpResponse> Login(@RequestBody LoginUserDto dto) {

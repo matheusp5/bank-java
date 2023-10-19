@@ -22,14 +22,18 @@ import java.util.stream.Collectors;
 @RequestMapping("api/user")
 public class UserController {
 
-    @Autowired
-    private IUserRepository userRepository;
+    private final IUserRepository userRepository;
+
+    private final Converter converter;
+
+    private final ITransactionRepository transactionRepository;
 
     @Autowired
-    private Converter converter;
-
-    @Autowired
-    private ITransactionRepository transactionRepository;
+    public UserController(IUserRepository userRepository, Converter converter, ITransactionRepository transactionRepository) {
+        this.userRepository = userRepository;
+        this.converter = converter;
+        this.transactionRepository = transactionRepository;
+    }
 
     @GetMapping
     public ResponseEntity<HttpResponse> GetUser(HttpServletRequest request) {

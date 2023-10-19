@@ -15,14 +15,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/transaction")
 public class TransactionController {
 
-    @Autowired
-    private ITransactionRepository transactionRepository;
+    private final ITransactionRepository transactionRepository;
+
+    private final TransactionService transactionService;
+
+    private final Converter converter;
 
     @Autowired
-    private TransactionService transactionService;
-
-    @Autowired
-    private Converter converter;
+    public TransactionController(ITransactionRepository transactionRepository, TransactionService transactionService, Converter converter) {
+        this.transactionRepository = transactionRepository;
+        this.transactionService = transactionService;
+        this.converter = converter;
+    }
 
     @PostMapping
     public ResponseEntity<HttpResponse> CreateTransaction(@RequestBody CreateTransactionDto dto, HttpServletRequest request) {
