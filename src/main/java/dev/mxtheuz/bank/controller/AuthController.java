@@ -36,7 +36,10 @@ public class AuthController {
             return ResponseEntity.ok(new HttpResponse(200, "authorized", token));
         }
 
-        return ResponseEntity.ok(new HttpResponse(401, "unauthorized", ""));
+        return ResponseEntity.status(401).body(HttpResponse.builder()
+                        .code(401)
+                        .message("unauthorized")
+                .build());
     }
 
     @PostMapping("/register")
@@ -46,6 +49,9 @@ public class AuthController {
             return ResponseEntity.status(201).body(new HttpResponse(201, "created", user));
         }
 
-        return ResponseEntity.status(400).body(new HttpResponse(400, "email_already_exists", ""));
+        return ResponseEntity.status(400).body(HttpResponse.builder()
+                        .code(400)
+                        .message("email_already_exists")
+                .build());
     }
 }
