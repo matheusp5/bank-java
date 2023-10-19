@@ -16,11 +16,9 @@ public class UserTransactionDto {
     private String id;
     private double amount;
     private UserDto receiver;
-    @CreatedDate
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    private String createdAt;
 
-    public UserTransactionDto(String id, double amount, UserDto receiver, LocalDateTime createdAt) {
+    public UserTransactionDto(String id, double amount, UserDto receiver, String createdAt) {
         this.id = id;
         this.amount = amount;
         this.receiver = receiver;

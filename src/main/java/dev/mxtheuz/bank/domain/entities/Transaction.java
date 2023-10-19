@@ -5,7 +5,9 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "tb_transactions")
@@ -23,7 +25,12 @@ public class Transaction {
     private double amount;
     private String receiverId;
     private String senderId;
-    @CreatedDate
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    private String createdAt;
+
+    @PrePersist
+    void preInsert() {
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        this.createdAt = dateFormat.format(currentDate);
+    }
 }

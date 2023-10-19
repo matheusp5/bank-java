@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class CreateTransactionResponseDto extends UserTransactionDto {
     private UserDto sender;
 
-    public CreateTransactionResponseDto(String id, double amount, UserDto receiver, UserDto sender, LocalDateTime createdAt) {
+    public CreateTransactionResponseDto(String id, double amount, UserDto receiver, UserDto sender, String createdAt) {
         super(id, amount, receiver, createdAt);
         this.sender = sender;
     }
